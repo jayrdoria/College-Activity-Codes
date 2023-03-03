@@ -1,0 +1,60 @@
+class StudentsDataException(BaseException):
+    pass 
+
+class BadLine(StudentsDataException):
+    def __str__ (self):
+        return "There is bad lines or wrong scores." 
+
+class FileEmpty(StudentsDataException):
+    def __str__ (self):
+        return "There is no data in the file."
+
+def closeFilesAndExit(src, e):
+    src.close()
+    return e.__str__()
+
+
+
+try:
+    srcname = input("Enter file name: ") #note that the program will require a two names(fname/lname) and a score.
+    src = open(srcname, "r")
+    data = src.read().splitlines()# gives a list with each line as an element; removes \n
+    src.close()
+    if data == []: # Is file empty? if yes, raise exception
+        raise FileEmpty()
+
+    try:
+        students = {}
+        for line in data:
+            words = line.split()
+            
+            name = words[0] + " " + words[1] # adds the whole name to one string
+            
+            points = float(words[2]) # changes type from str to float
+
+            if name in students.keys(): #if student name exist it will sum the points
+                students[name] += points
+            else:                       #else student does not yet exist append the new student name and its score.
+                students[name] = points
+      
+            
+    except:
+            raise BadLine() #Is there bad line? raise badline exception.
+        
+#Exceptions
+except FileEmpty as fe:
+    message = closeFilesAndExit(src, fe)
+    print(message)
+except BadLine as bl:
+    message = closeFilesAndExit(src, bl)
+    print(message)
+except BaseException as e:
+    message = closeFilesAndExit(src, e)
+    print(message)
+
+
+for key, value in sorted(students.items()): #Print out key-val pair sorted by names ascending
+            print(str(key) + '  ' + str(value) + '\n')
+
+
+

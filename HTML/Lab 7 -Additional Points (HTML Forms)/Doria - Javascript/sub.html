@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+	<div id="results">
+	</div>
+<a href="main.html">Back to Student Form</a>
+<script>
+	const resultsList = document.getElementById("results");
+	new URLSearchParams(window.location.search).forEach((value,name)=>
+	{
+		let queryParam = name
+		let queryValue = value
+		resultsList.append(name+":"+value)
+		resultsList.append(document.createElement("br"))
+		}
+	)
+</script>
+</body>
+</html>
